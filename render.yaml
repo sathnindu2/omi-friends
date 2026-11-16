@@ -1,0 +1,17 @@
+# Render "Blueprint": lets Render set up OMI FRIENDS automatically.
+# Render dashboard → New → Blueprint → pick your GitHub repo.
+services:
+  - type: web
+    name: omi-friends
+    runtime: node
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: NODE_VERSION
+        value: "22"
