@@ -1,0 +1,711 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-felt-950: #04170f;
+  --color-felt-900: #082a1c;
+  --color-felt-800: #0b3d2a;
+  --color-felt-700: #0f5132;
+  --color-felt-600: #146c43;
+  --color-gold-200: #faecc2;
+  --color-gold-300: #f3d27a;
+  --color-gold-400: #e2bb4f;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #a8841f;
+  --color-cream: #fffdf7;
+  --color-ruby: #c0262d;
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', 'Noto Sans Sinhala', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--color-felt-950);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: #f6f1e3;
+  overscroll-behavior: none;
+}
+
+html[lang='si'] body {
+  font-family: 'Noto Sans Sinhala', 'Iskoola Pota', 'Inter', system-ui, sans-serif;
+}
+
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+.safe-area {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ------------------------------------------------------------------ */
+/* Felt table backgrounds (selectable in Settings)                     */
+/* ------------------------------------------------------------------ */
+
+.felt {
+  --felt-a: #146c43;
+  --felt-b: #0b3d2a;
+  --felt-c: #04170f;
+  background-color: var(--felt-b);
+  background-image:
+    radial-gradient(ellipse at 50% 40%, var(--felt-a) 0%, var(--felt-b) 55%, var(--felt-c) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
+  background-blend-mode: normal, overlay;
+}
+[data-table='blue'] .felt {
+  --felt-a: #1d5f8c;
+  --felt-b: #0d3552;
+  --felt-c: #051726;
+}
+[data-table='maroon'] .felt {
+  --felt-a: #8a2335;
+  --felt-b: #511322;
+  --felt-c: #22060c;
+}
+[data-table='night'] .felt {
+  --felt-a: #2b2f4a;
+  --felt-b: #161829;
+  --felt-c: #07080f;
+}
+
+.table-oval {
+  border-radius: 46% / 40%;
+  background: radial-gradient(ellipse at 50% 45%, rgb(255 255 255 / 0.07), rgb(0 0 0 / 0.18) 70%);
+  box-shadow:
+    inset 0 0 0 3px rgb(212 175 55 / 0.35),
+    inset 0 0 60px rgb(0 0 0 / 0.45),
+    0 12px 40px rgb(0 0 0 / 0.35);
+}
+
+/* ------------------------------------------------------------------ */
+/* Buttons & panels                                                    */
+/* ------------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s;
+  user-select: none;
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.45;
+}
+.btn-gold {
+  color: #2a1d00;
+  background: linear-gradient(180deg, #f8df8f 0%, #e2bb4f 45%, #b98d1f 100%);
+  box-shadow:
+    0 6px 18px rgb(212 175 55 / 0.3),
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 -2px 0 rgb(0 0 0 / 0.15);
+}
+.btn-gold:hover:not(:disabled) {
+  box-shadow:
+    0 8px 26px rgb(212 175 55 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.6);
+}
+.btn-ghost {
+  color: #f6f1e3;
+  background: rgb(255 255 255 / 0.07);
+  border: 1px solid rgb(243 210 122 / 0.35);
+  backdrop-filter: blur(6px);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.13);
+}
+.btn-danger {
+  color: #fff;
+  background: linear-gradient(180deg, #d94a4f, #9e1c22);
+}
+.btn-sm {
+  min-height: 38px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.875rem;
+}
+
+.panel {
+  background: linear-gradient(180deg, rgb(10 40 28 / 0.92), rgb(5 22 15 / 0.94));
+  border: 1px solid rgb(212 175 55 / 0.3);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 20px 50px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.9rem;
+  background: rgb(0 0 0 / 0.3);
+  border: 1px solid rgb(243 210 122 / 0.3);
+  color: #fff;
+  font-size: 1.05rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus {
+  border-color: var(--color-gold-400);
+  box-shadow: 0 0 0 3px rgb(226 187 79 / 0.25);
+}
+
+.gold-text {
+  background: linear-gradient(180deg, #fff3c4 0%, #f3d27a 40%, #c79a2b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------ */
+/* Playing cards                                                       */
+/* ------------------------------------------------------------------ */
+
+.card {
+  --w: var(--cw, 64px);
+  position: relative;
+  width: var(--w);
+  height: calc(var(--w) * 1.42);
+  border-radius: calc(var(--w) * 0.1);
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(160deg, #ffffff 0%, #fbf7ec 60%, #f1ead6 100%);
+  box-shadow:
+    0 2px 6px rgb(0 0 0 / 0.35),
+    0 0 0 1px rgb(0 0 0 / 0.12);
+  color: #1b1b1b;
+  overflow: hidden;
+}
+.card-face.red {
+  color: #c0262d;
+}
+.card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.9;
+  font-weight: 800;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.card-corner.tl {
+  top: calc(var(--w) * 0.06);
+  left: calc(var(--w) * 0.07);
+}
+.card-corner.br {
+  bottom: calc(var(--w) * 0.06);
+  right: calc(var(--w) * 0.07);
+  transform: rotate(180deg);
+}
+.card-corner .r {
+  font-size: calc(var(--w) * 0.27);
+  letter-spacing: -0.05em;
+}
+.card-corner .s {
+  font-size: calc(var(--w) * 0.22);
+}
+.card-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--w) * 0.62);
+  line-height: 1;
+}
+.card-center.ace {
+  font-size: calc(var(--w) * 0.78);
+  filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.15));
+}
+.card-court {
+  position: absolute;
+  inset: 22% 18%;
+  border-radius: calc(var(--w) * 0.06);
+  border: 1.5px solid currentColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgb(212 175 55 / 0.22), transparent 55%),
+    repeating-linear-gradient(45deg, rgb(0 0 0 / 0.025) 0 4px, transparent 4px 8px);
+  font-family: var(--font-display);
+}
+.card-court .letter {
+  font-size: calc(var(--w) * 0.42);
+  font-weight: 800;
+  line-height: 1;
+}
+.card-court .mini {
+  font-size: calc(var(--w) * 0.22);
+  line-height: 1;
+}
+
+/* Small cards show only the corner index, enlarged */
+.card.compact .card-corner.br,
+.card.compact .card-center,
+.card.compact .card-court {
+  display: none;
+}
+.card.compact .card-corner.tl .r {
+  font-size: calc(var(--w) * 0.34);
+}
+.card.compact .card-corner.tl .s {
+  font-size: calc(var(--w) * 0.3);
+}
+.card.compact .compact-suit {
+  position: absolute;
+  right: 10%;
+  bottom: 6%;
+  font-size: calc(var(--w) * 0.5);
+  line-height: 1;
+}
+
+/* Card backs */
+.card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 2px 6px rgb(0 0 0 / 0.4),
+    0 0 0 1px rgb(0 0 0 / 0.25);
+  border: calc(var(--w) * 0.05) solid #fbf7ec;
+  overflow: hidden;
+}
+.card-back::after {
+  content: '';
+  position: absolute;
+  inset: 18% 22%;
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 255 255 / 0.55);
+  box-shadow: inset 0 0 0 3px rgb(255 255 255 / 0.12);
+}
+.card-back[data-back='classic'] {
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.13) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.13) 0 2px, transparent 2px 7px),
+    linear-gradient(160deg, #b3212c, #6f0f18);
+}
+.card-back[data-back='royal'] {
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 215 120 / 0.35) 0 12%, transparent 13%),
+    repeating-radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.1) 0 3px, transparent 3px 8px),
+    linear-gradient(160deg, #23408e, #0d1c4a);
+}
+.card-back[data-back='emerald'] {
+  background:
+    repeating-linear-gradient(90deg, rgb(212 175 55 / 0.25) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(0deg, rgb(212 175 55 / 0.25) 0 1px, transparent 1px 6px),
+    linear-gradient(160deg, #13704a, #06341f);
+}
+.card-back[data-back='lotus'] {
+  background:
+    radial-gradient(circle at 50% 50%, #ffd1dc 0 9%, transparent 10%),
+    conic-gradient(from 0deg at 50% 50%, #c2477a, #7d1f52, #c2477a, #7d1f52, #c2477a, #7d1f52, #c2477a, #7d1f52, #c2477a);
+}
+
+/* Interaction states */
+.card.playable {
+  cursor: pointer;
+}
+.card.playable .card-face {
+  box-shadow:
+    0 0 0 2px rgb(243 210 122 / 0.95),
+    0 4px 14px rgb(212 175 55 / 0.45);
+}
+.card.dim .card-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(10 20 15 / 0.45);
+  border-radius: inherit;
+}
+.card.selected {
+  transform: translateY(-22%);
+}
+.card.selected .card-face {
+  box-shadow:
+    0 0 0 3px #f8df8f,
+    0 10px 24px rgb(0 0 0 / 0.5),
+    0 0 26px rgb(243 210 122 / 0.7);
+}
+.card.winner .card-face {
+  box-shadow:
+    0 0 0 3px #f8df8f,
+    0 0 30px rgb(243 210 122 / 0.9);
+}
+
+/* Hand fan */
+.hand {
+  --cw: clamp(54px, 15.5vw, 96px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 0.5rem;
+}
+.hand > .card {
+  transition: transform 0.18s ease;
+}
+.hand > .card + .card {
+  margin-left: calc(var(--w) * -0.34);
+}
+@media (min-width: 640px) {
+  .hand > .card + .card {
+    margin-left: calc(var(--w) * -0.22);
+  }
+}
+@media (hover: hover) {
+  .hand > .card.playable:hover:not(.selected) {
+    transform: translateY(-10%);
+  }
+}
+
+/* Short landscape phones: smaller hand */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hand {
+    --cw: clamp(42px, 13vh, 64px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(calc(var(--rot, 0deg) + 3deg));
+  }
+}
+.anim-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translate(0, -55vh) rotate(-25deg) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-deal {
+  animation: deal-in 0.45s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+@keyframes play-in {
+  from {
+    opacity: 0.2;
+    transform: translate(var(--fx, 0), var(--fy, 0)) scale(0.85) rotate(var(--fr, 0deg));
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0) rotate(var(--r, 0deg));
+  }
+}
+.trick-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: calc(var(--w) * -0.5);
+  margin-top: calc(var(--w) * -0.71);
+  transform: rotate(var(--r, 0deg));
+}
+.trick-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: var(--sx, 0) var(--sy, 0);
+}
+.trick-slot .trick-card {
+  animation: play-in 0.38s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@keyframes collect {
+  to {
+    opacity: 0;
+    transform: translate(var(--wx, 0), var(--wy, 0)) scale(0.45) rotate(10deg);
+  }
+}
+.trick-slot.collect .trick-card {
+  animation:
+    play-in 0.38s cubic-bezier(0.2, 0.8, 0.3, 1) both,
+    collect 0.45s ease-in 1s forwards;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.anim-pop {
+  animation: pop 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-fade-up {
+  animation: fade-up 0.45s ease both;
+}
+
+@keyframes trump-announce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-20deg);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.15) rotate(4deg);
+  }
+  40% {
+    transform: scale(1) rotate(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5) translateY(-30vh);
+  }
+}
+.anim-trump {
+  animation: trump-announce 1.9s ease-in-out both;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px rgb(243 210 122 / 0.9),
+      0 0 14px rgb(243 210 122 / 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgb(243 210 122 / 1),
+      0 0 28px rgb(243 210 122 / 0.95);
+  }
+}
+.turn-glow {
+  animation: glow 1.3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background-image: linear-gradient(110deg, #f3d27a 30%, #fff8dc 50%, #f3d27a 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0), 110vh, 0) rotate(var(--spin, 720deg));
+    opacity: 0.9;
+  }
+}
+.confetti {
+  position: fixed;
+  top: 0;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 70;
+  animation: confetti-fall var(--dur, 3s) linear var(--delay, 0s) infinite;
+}
+
+@keyframes bubble {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.7);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.anim-bubble {
+  animation: bubble 3s ease both;
+}
+
+@keyframes token-in {
+  from {
+    transform: scale(0) rotate(-90deg);
+  }
+  to {
+    transform: none;
+  }
+}
+.token-new {
+  animation: token-in 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.4) both;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgb(243 210 122 / 0.25);
+  border-top-color: #f3d27a;
+  animation: spin 0.9s linear infinite;
+}
+
+/* Reduced motion (setting or OS preference): keep it calm */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0.01ms !important;
+}
+.reduce-motion .confetti {
+  display: none;
+}
+.reduce-motion .trick-slot.collect .trick-card {
+  animation: none;
+}
+
+/* Boot splash (before React loads) */
+.boot-splash {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 40%, #146c43, #0b3d2a 55%, #04170f);
+}
+.boot-logo {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  color: #f3d27a;
+}
+
+/* Scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Short screens (phones in landscape): compact seats so nothing overlaps the trick */
+@media (max-height: 500px) {
+  .seat-backs,
+  .score-bar {
+    display: none !important;
+  }
+  .seat-badge {
+    flex-direction: row;
+  }
+  .seat-side {
+    flex-direction: column;
+  }
+  .seat-top {
+    left: 24% !important;
+  }
+  .scoreboard {
+    padding-top: calc(env(safe-area-inset-top) + 3px);
+    padding-bottom: 2px;
+  }
+  .hand {
+    padding-top: 0.75rem !important;
+  }
+}
